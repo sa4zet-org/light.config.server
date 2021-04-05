@@ -1,0 +1,9 @@
+hs_err_pid*
+.idea*
+*.ipr
+*.iws
+*.iml
+*.jar
+/target/
+pom.xml.*
+release.properties

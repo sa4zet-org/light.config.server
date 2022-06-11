@@ -2,12 +2,12 @@ package win.sa4zet.light.config.server
 
 import com.jcraft.jsch.HostKey
 import com.jcraft.jsch.JSch
-import io.ktor.features.*
+import io.ktor.server.plugins.NotFoundException
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.ResetCommand
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
-import org.eclipse.jgit.transport.JschConfigSessionFactory
 import org.eclipse.jgit.transport.SshSessionFactory
+import org.eclipse.jgit.transport.ssh.jsch.JschConfigSessionFactory
 import org.eclipse.jgit.util.Base64
 import org.eclipse.jgit.util.FS
 import java.io.File
@@ -15,7 +15,6 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
-
 
 fun Git.sync(branch: String) {
     this.fetch()

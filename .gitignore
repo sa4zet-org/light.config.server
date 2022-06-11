@@ -4,6 +4,6 @@ hs_err_pid*
 *.iws
 *.iml
 *.jar
-/target/
+target/
 pom.xml.*
 release.properties

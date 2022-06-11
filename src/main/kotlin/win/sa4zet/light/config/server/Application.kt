@@ -1,22 +1,23 @@
 package win.sa4zet.light.config.server
 
-
-import com.typesafe.config.Config
-import com.typesafe.config.ConfigFactory
-import io.ktor.application.*
-import io.ktor.auth.*
-import io.ktor.features.*
+import com.typesafe.config.*
 import io.ktor.http.*
-import io.ktor.http.content.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
-import io.ktor.server.jetty.*
+import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.cio.*
+import io.ktor.server.http.content.*
+import io.ktor.server.plugins.*
+import io.ktor.server.plugins.compression.*
+import io.ktor.server.plugins.cors.routing.*
+import io.ktor.server.plugins.defaultheaders.*
+import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import io.ktor.util.*
 import java.io.File
 import java.util.*
 import kotlin.system.exitProcess
-import kotlin.time.ExperimentalTime
 
 data class CallInfo(
     val userName: String,
@@ -61,24 +62,19 @@ fun main(args: Array<String>) {
     EngineMain.main(args)
 }
 
-@InternalAPI
-@ExperimentalTime
 @Suppress("unused") // Referenced in application.conf
 fun Application.module() {
     val hashedUserTable = UserHashedTableAuth(
-        table = extraConfig.getConfigList("auth.basic.users")
-            .map { it.getString("userName") to it.getString("userHash").decodeBase64Bytes() }
-            .toMap(),
+        table = extraConfig.getConfigList("auth.basic.users").associate { it.getString("userName") to it.getString("userHash").decodeBase64Bytes() },
         digester = digestFunction
     )
 
-    install(CallLogging)
     install(DefaultHeaders) {
         header(HttpHeaders.Accept, contentTypeHocon.toString())
         header(HttpHeaders.Server, "Configuration Server")
     }
     install(CORS) {
-        method(HttpMethod.Options)
+        allowMethod(HttpMethod.Options)
         anyHost()
     }
     install(Compression) {
@@ -87,16 +83,23 @@ fun Application.module() {
         }
     }
     install(StatusPages) {
-        exception<NotFoundException> {
+        exception<NotFoundException> { call, _ ->
             call.respond(HttpStatusCode.NotFound)
         }
-        exception<BadRequestException> {
+        exception<BadRequestException> { call, _ ->
             call.respond(HttpStatusCode.BadRequest)
         }
-        exception<Throwable> {
-            application.log.error("ouch :(", it)
+        exception<ConfigException> { call, ex ->
+            call.respondText(
+                text = "Invalid configuration: ${ex.message}",
+                contentType = ContentType.Text.Plain,
+                status = HttpStatusCode.InternalServerError
+            )
+        }
+        exception<Throwable> { call, ex ->
+            call.application.log.error("ouch :(", ex)
             call.respond(HttpStatusCode.InternalServerError)
-            throw it
+            throw ex
         }
     }
     install(Authentication) {
@@ -170,4 +173,3 @@ private fun makeCallInfo(call: ApplicationCall): CallInfo {
     call.application.log.info("${callInfo.userName} tried to ${callInfo.method} ${callInfo.configFileName}{${callInfo.configSubPath}} from ${callInfo.remoteHost}")
     return callInfo
 }
-

@@ -4,7 +4,6 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigObject
 import com.typesafe.config.ConfigRenderOptions
 
-
 fun renderHocon(config: Config, inRaw: Boolean = false, prettyPrint: Boolean = true): String {
     return renderHocon(config.root(), inRaw, prettyPrint)
 }

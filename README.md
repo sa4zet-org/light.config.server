@@ -1,8 +1,5 @@
+[![Check and build](https://github.com/sa4zet-org/light.config.server/actions/workflows/release.yml/badge.svg)](https://github.com/sa4zet-org/light.config.server/actions/workflows/release.yml)
 # Lightweight configuration server using HOCON files
-
-## Pull latest image
-
-`docker pull sa4zet/light.config.server`
 
 ## The config_server_basic_auth_salt environment variable
 
@@ -19,7 +16,7 @@ docker run \
 --rm \
 -it \
 --env="config_server_basic_auth_salt=example salt" \
-sa4zet/light.config.server digest
+ghcr.io/sa4zet-org/light.config.server digest
 ```
 
 You can terminate the hash generating process with `CTRL+D`.
@@ -47,7 +44,7 @@ docker run \
 --env="config_server_config_path=/app.conf" \
 --mount="type=bind,readonly,source=/tmp/example.conf,destination=/app.conf" \
 --publish="0.0.0.0:80:5454/tcp" \
-sa4zet/light.config.server
+ghcr.io/sa4zet-org/light.config.server
 
 c7c93042fd388f305c64be9cc997a4bf0647293b3d535af6deb81e1dfab13302
 ```
@@ -56,7 +53,7 @@ c7c93042fd388f305c64be9cc997a4bf0647293b3d535af6deb81e1dfab13302
 docker ps
 
 CONTAINER ID   IMAGE                        COMMAND                  CREATED         STATUS                   PORTS                  NAMES
-c7c93042fd38   sa4zet/light.config.server   "java -jar /app/ktor…"   4 minutes ago   Up 4 minutes (healthy)   0.0.0.0:80->5454/tcp   light.config.server
+c7c93042fd38   ghcr.io/sa4zet-org/light.config.server   "java -jar /app/ktor…"   4 minutes ago   Up 4 minutes (healthy)   0.0.0.0:80->5454/tcp   light.config.server
 ```
 
 ## Config remote git repository

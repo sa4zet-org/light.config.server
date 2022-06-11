@@ -5,7 +5,7 @@
   <groupId>win.sa4zet</groupId>
   <artifactId>light.config.server</artifactId>
   <packaging>jar</packaging>
-  <version>2021.4.5.1</version>
+  <version>latest</version>
 
   <name>Light Configuration Server</name>
   <description>Lightweight configuration server using HOCON files</description>
@@ -27,26 +27,6 @@
     </developer>
   </developers>
 
-  <repositories>
-    <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>central</id>
-      <url>https://jcenter.bintray.com</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>central</id>
-      <name>bintray-plugins</name>
-      <url>https://jcenter.bintray.com</url>
-    </pluginRepository>
-  </pluginRepositories>
-
   <scm>
     <connection>scm:git:git://github.com:sa4zet-org/light.config.server.git</connection>
     <developerConnection>scm:git:ssh://github.com:sa4zet-org/light.config.server.git</developerConnection>
@@ -55,81 +35,78 @@
 
   <properties>
     <kotlin.compiler.incremental>false</kotlin.compiler.incremental>
-    <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
-    <kotlin.compiler.languageVersion>1.4</kotlin.compiler.languageVersion>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <kotlin.compiler.jvmTarget>17</kotlin.compiler.jvmTarget>
+    <kotlin.compiler.languageVersion>1.7</kotlin.compiler.languageVersion>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <!-- maven plugin versions -->
     <maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
-    <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
-    <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-    <maven.enforcer.plugin.version>3.0.0-M3</maven.enforcer.plugin.version>
-    <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
-    <maven.release.plugin.version>3.0.0-M1</maven.release.plugin.version>
-    <maven.surefire.plugin.version>3.0.0-M4</maven.surefire.plugin.version>
+    <maven.clean.plugin.version>3.2.0</maven.clean.plugin.version>
+    <maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
+    <maven.enforcer.plugin.version>3.1.0</maven.enforcer.plugin.version>
+    <maven.jar.plugin.version>3.2.2</maven.jar.plugin.version>
+    <maven.release.plugin.version>3.0.0-M6</maven.release.plugin.version>
+    <maven.surefire.plugin.version>3.0.0-M7</maven.surefire.plugin.version>
 
     <!-- not maven plugin versions -->
-    <jackson.version>2.12.2</jackson.version>
-    <junit.jupiter.version>5.7.1</junit.jupiter.version>
-    <kotlin.version>1.4.32</kotlin.version>
-    <ktor.version>1.5.3</ktor.version>
-    <logback.version>1.2.3</logback.version>
-    <jgit.version>5.11.0.202103091610-r</jgit.version>
+    <junit.jupiter.version>5.8.2</junit.jupiter.version>
+    <kotlin.version>1.7.0</kotlin.version>
+    <ktor.version>2.0.2</ktor.version>
+    <logback.version>1.2.11</logback.version>
+    <jgit.version>6.1.0.202203080745-r</jgit.version>
   </properties>
 
   <dependencies>
 
-    <!-- https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib -->
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib</artifactId>
       <version>${kotlin.version}</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/io.ktor/ktor-server-core -->
     <dependency>
       <groupId>io.ktor</groupId>
-      <artifactId>ktor-server-core</artifactId>
+      <artifactId>ktor-server-core-jvm</artifactId>
       <version>${ktor.version}</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/io.ktor/ktor-auth -->
     <dependency>
       <groupId>io.ktor</groupId>
-      <artifactId>ktor-auth</artifactId>
+      <artifactId>ktor-server-cio-jvm</artifactId>
       <version>${ktor.version}</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/io.ktor/ktor-auth-jwt -->
     <dependency>
       <groupId>io.ktor</groupId>
-      <artifactId>ktor-auth-jwt</artifactId>
-      <scope>compile</scope>
+      <artifactId>ktor-server-auth-jvm</artifactId>
       <version>${ktor.version}</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/io.ktor/ktor-server-jetty -->
     <dependency>
       <groupId>io.ktor</groupId>
-      <artifactId>ktor-server-jetty</artifactId>
+      <artifactId>ktor-server-status-pages-jvm</artifactId>
       <version>${ktor.version}</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/io.ktor/ktor-jackson -->
     <dependency>
       <groupId>io.ktor</groupId>
-      <artifactId>ktor-jackson</artifactId>
+      <artifactId>ktor-server-default-headers-jvm</artifactId>
       <version>${ktor.version}</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
     <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>${jackson.version}</version>
+      <groupId>io.ktor</groupId>
+      <artifactId>ktor-server-compression-jvm</artifactId>
+      <version>${ktor.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.ktor</groupId>
+      <artifactId>ktor-server-cors-jvm</artifactId>
+      <version>${ktor.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
@@ -301,7 +278,7 @@
             <configuration>
               <rules>
                 <requireMavenVersion>
-                  <version>[3.6.1,)</version>
+                  <version>[3.8.1,)</version>
                 </requireMavenVersion>
               </rules>
             </configuration>
